@@ -47,7 +47,7 @@ mean xs = sum xs / fromIntegral (length xs)
 
 -- geometric mean: the nth root of the product of n values
 geometricMean :: (Floating a) => [a] -> a
-geometricMean xs = sqrt $ product xs
+geometricMean xs = product xs ** (1 / (fromIntegral $ length xs))
 
 -- harmonic mean: reciprocal of the average of the reciprocals
 harmonicMean :: (Fractional a) => [a] -> a
