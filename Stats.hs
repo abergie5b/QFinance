@@ -24,6 +24,7 @@ module Stats (
 , coefVar
 , skewness
 , sampleSkewness
+, tStat
 , gaussianProbaDensity
 , standardize
 , factorial
@@ -78,8 +79,8 @@ coefVar :: (Floating a) => [a] -> a
 coefVar xs = stdev xs / mean xs
 
 -- Standard Error
-stdErr :: (Floating a) => a -> a -> a
-stdErr s n = s / sqrt n
+stdErr :: (Floating a) => [a] -> a
+stdErr xs = stdev xs / sqrt $ length xs
 
 -- covariance: the sum of the products of the differences between means from two datasetes
 covar :: (Fractional a) => [a] -> [a] -> a
@@ -252,8 +253,8 @@ gaussianProbaDensity x _mean _stdev = (1 / sqrt(two_times_stdev_squared * realTo
         exponent = ((x-_mean)^2 / two_times_stdev_squared) * (-1)
 
 -- T-Statistic: for hypothesis tests concerninga single population mean
-tStat :: (Floating a) => a -> a -> a -> a -> a
-tStat mean expectedMean stdev n = (mean - expectedMean) / stdErr stdev n
+tStat :: (Floating a) => [a] -> a -> a
+tStat xs expectedMean = (mean xs - expectedMean) / stdErr xs
 
 -- Probability Functions
 ----------------------------------------------
