@@ -251,6 +251,9 @@ gaussianProbaDensity x _mean _stdev = (1 / sqrt(two_times_stdev_squared * realTo
         two_times_stdev_squared = (2 * _stdev)^2
         exponent = ((x-_mean)^2 / two_times_stdev_squared) * (-1)
 
+-- T-Statistic: for hypothesis tests concerninga single population mean
+tStat :: (Floating a) => a -> a -> a -> a -> a
+tStat mean expectedMean stdev n = (mean - expectedMean) / stdErr stdev n
 
 -- Probability Functions
 ----------------------------------------------
