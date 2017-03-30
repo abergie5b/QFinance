@@ -5,6 +5,7 @@ module Stats (
 , harmonicMean
 , var
 , stdev
+, stdErr
 , absMeanDev
 , covar
 , euclideanDistance
@@ -75,6 +76,10 @@ absMeanDev xs = sum $ map (\x -> abs (x - mean') / length') xs
 -- Coefficient of Variation
 coefVar :: (Floating a) => [a] -> a
 coefVar xs = stdev xs / mean xs
+
+-- Standard Error
+stdErr :: (Floating a) => a -> a -> a
+stdErr s n = s / sqrt n
 
 -- covariance: the sum of the products of the differences between means from two datasetes
 covar :: (Fractional a) => [a] -> [a] -> a
