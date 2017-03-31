@@ -88,7 +88,7 @@ covar xs ys = numerator / denominator
     where
         x_mean = mean xs
         y_mean = mean ys
-        numerator = sum (map (\a -> (fst a - x_mean) * (snd a - y_mean)) $ zip xs ys)
+        numerator = sum  (map (\a -> (fst a - x_mean) * (snd a - y_mean)) $ zip xs ys)
         denominator = fromIntegral (length xs) - 1
 
 -- normalize: difference from min over range
@@ -175,6 +175,10 @@ corrCoef xs ys = numerator / denominator
 -- cofficient of determination (r^2)
 rSquared :: (Floating a) => [a] -> [a] -> a
 rSquared xs ys = corrCoef xs ys ^ 2
+
+-- coefficient of determination (alternative calculation)
+corr :: (Floating a) => [a] -> [a] -> a
+corr xs ys = covar xs ys / (stdev xs * stdev ys)
 
 
 -- Spearman's Rho Functions
