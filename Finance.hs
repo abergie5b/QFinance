@@ -18,6 +18,12 @@ module Finance (
 , sharpeRatio
 , cashFlowsFV
 , compoundingCashFlowsFV
+, capm
+, ddm
+, nondiverRisk
+, sustainableGrowthRate
+, assetBeta
+, equityBeta
 ) where
 
 import Stats (mean, stdev, geometricMean)
@@ -174,11 +180,23 @@ ddm dividend price r = fwdAnnualYield + r
         fwdAnnualYield = dividend / price
 
 -- Earnings Retention Rate
-earningsRetention :: (Floating a) => a -> a -> a
-earningsRetention dividend eps = (1 - dividend / eps)
+earningsRetentionR :: (Floating a) => a -> a -> a
+earningsRetentionR dividend eps = (1 - dividend / eps)
 
 -- Sustainable Growth Rate
 sustainableGrowthRate :: (Floating a) => a -> a -> a -> a
-sustainableGrowthRate dividend eps roe = earningsRetention' * roe
+sustainableGrowthRate dividend eps roe = earningsRetentionR' * roe
     where 
-        earningsRetention' = earningsRetention dividend eps
+        earningsRetentionR' = earningsRetentionR dividend eps
+        
+-- Non-diversifiable Risk
+nondiverRisk :: (Floating a) => a -> a -> a
+nondiverRisk tax debtToEquity = 1 + ((1 - tax) * debtToEquity)
+
+-- Asset Beta: unlevered beta, the business risk of assets
+assetBeta :: (Floating a) => a -> a -> a -> a
+assetBeta equityBeta tax debtToEquity = equityBeta * (1 / nondiverRisk tax debtToEquity)
+
+-- Equity Beta: levered beta
+equityBeta :: (Floating a) => a -> a -> a -> a
+equityBeta assetBeta tax debtToEquity = assetBeta * nondiverRisk tax debtToEquity
