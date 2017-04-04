@@ -156,3 +156,29 @@ geometricMeanReturns xs = geometricMean xs - 1
     - s -> standard deviation of asset -}
 sharpeRatio :: (Floating a) => a -> a -> a -> a
 sharpeRatio mean' riskFreeMean s = (mean' - riskFreeMean) / s
+
+{- Capital Asset Pricing Model
+    - the sum of the risk-free rate of interest and a risk premium 
+    - risk premium is beta times the difference between expected market returns and the risk-free rate-}
+capm :: (Floating a) => a -> a -> a -> a
+capm riskFreeRate beta expectedReturns = riskFreeRate + riskPremium
+    where 
+        riskPremium = beta * (expectedReturns - riskFreeRate)
+
+{- Dividend-Discount Model
+    - the present value of a share's expected future dividends, assuming a constant growth rate
+    - forward annual dividend yield is the dividend over price -}
+ddm :: (Floating a) => a -> a -> a -> a
+ddm dividend price r = fwdAnnualYield + r
+    where 
+        fwdAnnualYield = dividend / price
+
+-- Earnings Retention Rate
+earningsRetention :: (Floating a) => a -> a -> a
+earningsRetention dividend eps = (1 - dividend / eps)
+
+-- Sustainable Growth Rate
+sustainableGrowthRate :: (Floating a) => a -> a -> a -> a
+sustainableGrowthRate dividend eps roe = earningsRetention' * roe
+    where 
+        earningsRetention' = earningsRetention dividend eps
