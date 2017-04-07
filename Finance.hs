@@ -150,7 +150,11 @@ effectiveAnnualYield maturityPrice initPrice interest time = (1 + hpy) ** (365 /
         
 -- Money Market Yield (CD Equivalent Yield)
 moneyMarketYield :: (Floating a) => a -> a -> a
-moneyMarketYield rate time = (360 * rate) / (360 - (time * rate))
+moneyMarketYield bankDiscountYield time = (360 * bankDiscountYield) / (360 - (time * bankDiscountYield))
+
+-- Money Market Yield (Fixed Income)
+moneyMarketYield' :: (Floating a) => a -> a -> a
+moneyMarketYield' par price n = ((par - price) / price) * (360 / n)
 
 -- Geometric Mean Returns (Compound Returns)
 geometricMeanReturns :: (Floating a) => [a] -> a
